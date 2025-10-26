@@ -1,0 +1,13 @@
+{
+  "name": "dropcart",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "echo \"(add linter later)\"",
+    "test": "echo \"(add tests later)\""
+  }
+}
