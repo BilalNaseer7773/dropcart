@@ -1,28 +1,37 @@
-import { NavigationContainer } from "@react-navigation/native";
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Tabs from "./Tabs";
+import AuthNavigator from "./AuthNavigator";
+import { useAuth } from "../state/auth";
+import { useTheme } from "../theme/ThemeProvider";
 
 export type RootStackParamList = {
   Tabs: undefined;
-  Product: { id: string } | undefined;
-  Checkout: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function RootNavigator() {
+  const { isAuthed } = useAuth();
+  const { mode } = useTheme();
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Tabs"
-          component={Tabs}
-          options={{ headerShown: false }}
-        />
-        {/* Placeholder routes we’ll flesh out later */}
-        <Stack.Screen name="Product" component={() => null} />
-        <Stack.Screen name="Checkout" component={() => null} />
-      </Stack.Navigator>
+    <NavigationContainer theme={mode === "dark" ? DarkTheme : DefaultTheme}>
+      {isAuthed ? (
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Tabs"
+            component={Tabs}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      ) : (
+        <AuthNavigator />
+      )}
     </NavigationContainer>
   );
 }
